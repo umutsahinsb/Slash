@@ -10,6 +10,7 @@ class UInputMappingContext;
 class UInputAction;
 class USpringArmComponent;
 class UCameraComponent;
+class AItem;
 
 UCLASS()
 class SLASH_API ASlashCharacter : public ACharacter
@@ -35,13 +36,22 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* JumpAction;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* PickUpAction;
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	void PickUp();
+
+private:
 	UPROPERTY(VisibleAnywhere)
     USpringArmComponent* SpringArm;
-    
+	
     UPROPERTY(VisibleAnywhere)
     UCameraComponent* ViewCamera;
 	
-	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
+	UPROPERTY(VisibleInstanceOnly)
+	AItem* OverlappingItem;
+public:
+	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 };
