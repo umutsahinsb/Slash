@@ -11,6 +11,7 @@
 #include "Items/Weapons/Weapon.h"
 #include "Animation/AnimMontage.h"
 #include "Components/BoxComponent.h"
+#include "Net/OnlineEngineInterface.h"
 
 ASlashCharacter::ASlashCharacter()
 {
@@ -30,7 +31,6 @@ ASlashCharacter::ASlashCharacter()
 	ViewCamera=CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(SpringArm);
 	ViewCamera->SetRelativeLocation(FVector(SpringArm->GetRelativeLocation().X, SpringArm->GetRelativeLocation().Y, 353.f));
-	
 }
 
 void ASlashCharacter::BeginPlay()
@@ -108,11 +108,9 @@ void ASlashCharacter::SetWeaponEnableCollision(ECollisionEnabled::Type Collision
 void ASlashCharacter::PickUp()
 {
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
-	AWeapon* OverlappingWeapon2 = Cast<AWeapon>(OverlappingItem);
 	if (OverlappingWeapon)
 	{
-		OverlappingWeapon->Equip(GetMesh(), FName("weapon_rSocket"));
-		OverlappingWeapon2->Equip(GetMesh(), FName("weapon_lSocket"));
+		OverlappingWeapon->Equip(GetMesh(), FName("weapon_lSocket"));
 		OverlappingItem = nullptr;
 		EquippedWeapon = OverlappingWeapon;
 	}
@@ -134,8 +132,11 @@ void ASlashCharacter::PlayAttackMontage()
 		case 1:
 			SectionName = FName("Attack2");
 			break;
+		case 2:
+			SectionName = FName("Attack3");
+			break;
 		default:
-			SectionName = FName("Attack1");
+			break;
 		}
 		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}

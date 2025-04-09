@@ -64,9 +64,12 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		TraceTypeQuery1,
 		false,
 		ActorsToIgnore,
-		EDrawDebugTrace::None,
+		EDrawDebugTrace::ForDuration,
 		Hit,
-		true
+		true,
+		FLinearColor::Blue,
+		FLinearColor::Yellow,
+		3.0f
 		);
 	if (Hit.GetActor())
 	{
