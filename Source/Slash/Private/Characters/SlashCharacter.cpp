@@ -110,7 +110,8 @@ void ASlashCharacter::PickUp()
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
 	if (OverlappingWeapon)
 	{
-		OverlappingWeapon->Equip(GetMesh(), FName("weapon_lSocket"));
+		OverlappingWeapon->Equip(GetMesh(), FName("weapon_lSocket"), this);
+		OverlappingWeapon->SetInstigator(this);
 		OverlappingItem = nullptr;
 		EquippedWeapon = OverlappingWeapon;
 	}

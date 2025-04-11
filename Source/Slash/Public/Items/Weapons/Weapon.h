@@ -30,13 +30,13 @@ protected:
 
 public:
 	AWeapon();
-	void Equip(USceneComponent* InParent, FName InSocketName);
+	void Equip(USceneComponent* InParent, FName InSocketName, APawn* NewInstigator);
 
 	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }
 	TArray<AActor*> IgnoreActors;
 	
 private:
-	UPROPERTY(VisibleAnywhere, Category = "WeaponComponent")
+	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	UBoxComponent* WeaponBox;
 
 	UPROPERTY(VisibleAnywhere)
@@ -44,5 +44,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* BoxTraceEnd;
+
+	UPROPERTY(EditAnywhere, Category= "Weapon Properties")
+	float Damage = 20.f;
 	
 };

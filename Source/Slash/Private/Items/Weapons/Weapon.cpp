@@ -7,6 +7,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Slash/DebugMacros.h"
 #include "Interfaces/HitInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 AWeapon::AWeapon()
 {
@@ -64,15 +65,20 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		TraceTypeQuery1,
 		false,
 		ActorsToIgnore,
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
 		Hit,
-		true,
-		FLinearColor::Blue,
-		FLinearColor::Yellow,
-		3.0f
+		true
 		);
 	if (Hit.GetActor())
 	{
+		UGameplayStatics::ApplyDamage(
+			Hit.GetActor(),
+			Damage,
+			GetInstigator()->GetController(),
+			this,
+			UDamageType::StaticClass()
+			);
+		
 		IHitInterface* HitInterface = Cast<IHitInterface>(Hit.GetActor());
 		if (HitInterface)
 		{
@@ -80,11 +86,18 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		}
 		IgnoreActors.AddUnique(Hit.GetActor());
 		CreateFields(Hit.ImpactPoint);
+
+		
+		
 	}
 }
 
-void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
+void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, APawn* NewInstigator)
 {
+	SetInstigator(NewInstigator);
+	
 	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
+
+
 }
