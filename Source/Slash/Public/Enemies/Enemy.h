@@ -48,6 +48,12 @@ private:
 	USoundBase* HitSound;
 	UPROPERTY(EditAnywhere, Category = VFX)
 	UParticleSystem* HitParticle;
+
+	UPROPERTY()
+	AActor* CombatTarget;
+
+	UPROPERTY(EditAnywhere)
+	double CombatRadius = 500.f;
 	
 };
 
